@@ -1,0 +1,33 @@
+.btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.secondary {
+    background-color: transparent;
+    color: #4157ff;
+    border: 1px solid #4157ff;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.primary {
+    background-color: #4361EE;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.header_worker_btn {
+    color: #5165ff;
+    margin-left: 10px;
+    cursor: pointer;
+    margin-bottom: 0;
+}

@@ -1,0 +1,21 @@
+header {
+    width: 100%;
+    height: 60px;
+    display: grid;
+    grid-template-columns: 20% 1fr 20%;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 0;
+    position: fixed;
+    transition: 0.5s;
+}
+
+header > img {
+    max-width: 100px;
+}
+
+.header_search_box {
+    display: flex;
+    justify-content: center;
+}
