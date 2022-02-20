@@ -1,0 +1,37 @@
+.order_info_box {
+    padding: 15px;
+    background-color: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.order_info_box_images_grid {
+    display: flex;
+    align-items: center;
+}
+
+.order_info_box_image_box {
+    width: 100px;
+    height: 100px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    position: relative;
+    margin-left: 20px;
+}
+
+.order_info_box_image_box_close {
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    color: #4157ff;
+    font-weight: bold;
+    margin: 0;
+    cursor: pointer;
+}
+
+.order_info_box_button_box {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}

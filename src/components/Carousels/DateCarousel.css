@@ -1,0 +1,61 @@
+.react-multi-carousel-list {
+    padding-left: 30px;
+    height: 150px;
+}
+
+.carousel_date_container {
+    width: 100px;
+    height: 120px;
+    border: 1px solid rgba(65, 87, 255, 0.5);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.carousel_date_container_month {
+    color: #7a7a7a;
+    margin-bottom: 0;
+}
+
+.carousel_date_container_date {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.carousel_date_container_day {
+    font-size: 16px;
+    color: #7a7a7a;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.carousel_date_container > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sliderClass {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel_date_container.selected {
+    transform: scale(1.2);
+    background-color: rgba(65, 87, 255, 0.6);
+}
+
+.carousel_date_container_month.selected {
+    color: white;
+}
+.carousel_date_container_date.selected {
+    color: white;
+}
+.carousel_date_container_day.selected {
+    color: white;
+}

@@ -53,19 +53,23 @@
 }
 
 .order_page {
-    max-width: 1440px;
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 20px;
+    padding-top: 100px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
-.order_page_info_container {
+.order_page_container_title {
+    font-size: 24px;
+    text-align: center;
+}
+
+.order_page_container {
     background-color: rgba(15, 10, 222, 0.1);
-    display: flex;
-    align-items: center;
-    padding: 15px;
-    border-radius: 15px;
-    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 .order_page_info_container > img {

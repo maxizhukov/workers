@@ -89,6 +89,7 @@ export default function CustomerWorkSearch(props) {
           : <input
             type="text"
             onChange={handleInputChange}
+            autoFocus
           />
         }
         <button onClick={() => console.log("Btn")}>
