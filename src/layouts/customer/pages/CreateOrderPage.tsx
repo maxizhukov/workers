@@ -7,6 +7,8 @@ import * as Yup from "yup";
 import {categoriesService} from "../../../services/categories.service";
 import OrderInformation from "../../../components/OrderBoxes/OrderInformation";
 import OrderDate from "../../../components/OrderBoxes/OrderDate";
+import OrderCategories from "../../../components/OrderBoxes/OrderCategories";
+import OrderAuthentication from "../../../components/OrderBoxes/OrderAuthentication";
 
 const { Option } = Select;
 
@@ -25,7 +27,7 @@ export default function CreateOrderPage() {
 
   useEffect(() => {
     getData();
-  });
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -49,7 +51,6 @@ export default function CreateOrderPage() {
     },
   });
 
-
   return(
     <div className="order_page">
       <div className="order_page_container">
@@ -57,8 +58,10 @@ export default function CreateOrderPage() {
 
           <h3 className="order_page_container_title">Get rid of bulky items</h3>
 
+          <OrderCategories open={true} />
           <OrderInformation open={true} />
           <OrderDate open={true} />
+          <OrderAuthentication open={true} />
 
         </form>
       </div>

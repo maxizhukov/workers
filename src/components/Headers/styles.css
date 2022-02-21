@@ -9,6 +9,7 @@ header {
     margin-bottom: 0;
     position: fixed;
     transition: 0.5s;
+    z-index: 1;
 }
 
 header > img {

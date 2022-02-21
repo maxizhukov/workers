@@ -31,3 +31,8 @@
     cursor: pointer;
     margin-bottom: 0;
 }
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

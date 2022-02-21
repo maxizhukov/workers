@@ -1,14 +1,14 @@
 import {requestHandler} from "../utils/requestHandler";
 
-export class categoriesService {
+export class subCategoriesService {
   constructor() {
     //
   }
 
-  async getAllCategories() {
+  async getByCategoriesId(id:string) {
     let responseObj:any = {};
     await requestHandler({
-      path: "general/categories",
+      path: `general/subCategories/byCategoryId/${id}`,
       method: "GET"
     }).then((res:any) => {
       if (res && res.status === 200) {

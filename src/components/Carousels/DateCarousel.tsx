@@ -91,6 +91,7 @@ export default function DateCarousel() {
               : "carousel_date_container"
             }
             key={date}
+            onClick={() => setSelectedDate(date)}
           >
             <div>
               <p className={date === selectedDate

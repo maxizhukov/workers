@@ -35,3 +35,33 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.order_categories_grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 20px;
+}
+
+.order_categories_grid_item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid rgba(65, 87, 255, 0.3);
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.order_categories_grid_item > img {
+    width: 40px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+.order_categories_grid_item > p {
+    margin: 0;
+}
+
+.order_info_box_sub_category {
+    cursor: pointer;
+    color: #4157ff;
+}
