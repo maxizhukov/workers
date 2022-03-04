@@ -5,10 +5,13 @@ import {categoriesService} from "../../services/categories.service";
 import {subCategoriesService} from "../../services/subCategories.service";
 import { Spin } from "antd";
 import {orderTypesService} from "../../services/orderTypes.service";
-import Button from "../Button/Button";
+import {FormOutlined} from "@ant-design/icons";
+import {CloseOutlined} from "@ant-design/icons";
 
 interface IProps {
-	open: boolean;
+  open: boolean;
+  goNext: () => void;
+  openBox: () => void;
 }
 
 export default function OrderCategories(props:IProps) {
@@ -26,10 +29,13 @@ export default function OrderCategories(props:IProps) {
   const [showSubCategoriesLoader, setShowSubCategoriesLoader] = useState(true);
   const [showOrderTypesLoader, setShowOrderTypesLoader] = useState(true);
 
+  // Layout
+  const [completed, setCompleted] = useState(false);
+
   const [selectionState, setSelectionState] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState<any>({});
-  const [selectedSubCategory, setSelectedSubCategory] = useState({});
-  const [selectedOrderTypesData, setSelectedOrderTypesData] = useState({});
+  const [selectedSubCategory, setSelectedSubCategory] = useState<any>({});
+  const [selectedOrderTypesData, setSelectedOrderTypesData] = useState<any>({});
 
   const getCategories = async () => {
     await new categoriesService().getAllCategories()
@@ -83,72 +89,155 @@ export default function OrderCategories(props:IProps) {
     setSelectedSubCategory(item);
   };
 
+  const handleOrderTypeSelect = (orderType:any) => {
+    setSelectedOrderTypesData(orderType);
+    setCompleted(true);
+    props.goNext();
+  };
+
+  // Clear states
+
+  const clearCategoryState = () => {
+    setSelectionState(0);
+    setSelectedCategory({});
+    setSelectedSubCategory({});
+    setSelectedOrderTypesData({});
+  };
+
+  const clearSubCategoryState = () => {
+    setSelectionState(1);
+    setSelectedSubCategory({});
+    setSelectedOrderTypesData({});
+  };
+
+  const clearOrderTypeState = () => {
+    setSelectionState(2);
+    setSelectedOrderTypesData({});
+  };
+
   return(
     <div className="order_info_box">
-      <h4>Select category</h4>
-      <div className="order_categories_grid">
-        {selectionState > 0
-          ? <div
-            className="order_categories_grid_item"
-          >
-            <img src={categoryImage} alt="category" />
-            <p>{selectedCategory.title}</p>
+      {props.open
+        ? <>
+          <h4>Select category</h4>
+          <div className="order_categories_grid">
+            {selectionState > 0
+              ? <div
+                className="order_categories_grid_item"
+              >
+                <img src={categoryImage} alt="category" />
+                <p>{selectedCategory.title}</p>
+                <CloseOutlined
+                  className="order_categories_grid_item_close"
+                  onClick={() => clearCategoryState()}
+                />
+              </div>
+              : categories && categories.length && categories.map((categoryItem:any) => (
+                <div
+                  className="order_categories_grid_item"
+                  key={categoryItem.id}
+                  onClick={() => handleCategorySelect(categoryItem)}
+                >
+                  <img src={categoryImage} alt="category" />
+                  <p>{categoryItem.title}</p>
+                </div>
+              ))
+            }
           </div>
-          : categories && categories.length && categories.map((categoryItem:any) => (
-            <div
-              className="order_categories_grid_item"
-              key={categoryItem.id}
-              onClick={() => handleCategorySelect(categoryItem)}
-            >
-              <img src={categoryImage} alt="category" />
-              <p>{categoryItem.title}</p>
-            </div>
-          ))
-        }
-      </div>
-      {selectionState > 0
-        ? <>
-          <h4 style={{marginTop: "10px"}}>Select service</h4>
-          {showSubCategoriesLoader
-            ? <div className="center">
-              <Spin />
-            </div>
-            : <div className="order_categories_grid">
-              {subCategoriesData.map((subCategoryItem:any) => (
-                <p
-                  className="order_info_box_sub_category"
-                  key={subCategoryItem.id}
-                  onClick={() => handleSubCategoryClick(subCategoryItem)}
-                >
-                  {subCategoryItem.title}
-                </p>
-              ))}
-            </div>
+          {selectionState > 0
+            ? Object.keys(selectedSubCategory).length
+              ? <>
+                <h4 style={{marginTop: "10px"}}>Select service</h4>
+                <div className="order_info_box_sub_category_selected_box">
+                  <p>{selectedSubCategory.title}</p>
+                  <CloseOutlined
+                    className="order_info_box_sub_category_selected_box_close"
+                    onClick={() => clearSubCategoryState()}
+                  />
+                </div>
+              </>
+              : <>
+                {showSubCategoriesLoader
+                  ? <div className="center">
+                    <Spin />
+                  </div>
+                  : <>
+                    <h4 style={{marginTop: "10px"}}>Select service</h4>
+                    <div className="order_categories_grid">
+                      {subCategoriesData.map((subCategoryItem:any) => (
+                        <p
+                          className="order_info_box_sub_category"
+                          key={subCategoryItem.id}
+                          onClick={() => handleSubCategoryClick(subCategoryItem)}
+                        >
+                          {subCategoryItem.title}
+                        </p>
+                      ))}
+                    </div>
+                  </>
+                }
+              </>
+            : null
+          }
+          {selectionState === 2
+            ? <>
+              <h4 style={{marginTop: "10px"}}>Order type</h4>
+              {Object.keys(selectedOrderTypesData).length
+                ? <div className="order_info_box_sub_category_selected_box">
+                  <p>{selectedOrderTypesData.title}</p>
+                  <CloseOutlined
+                    className="order_info_box_sub_category_selected_box_close"
+                    onClick={() => clearOrderTypeState()}
+                  />
+                </div>
+                : showOrderTypesLoader
+                  ? <div className="center">
+                    <Spin />
+                  </div>
+                  : <div className="order_categories_grid">
+                    {orderTypesData.map((orderTypesItem:any) => (
+                      <p
+                        className="order_info_box_sub_category"
+                        key={orderTypesItem.id}
+                        onClick={() => handleOrderTypeSelect(orderTypesItem)}
+                      >
+                        {orderTypesItem.title}
+                      </p>
+                    ))}
+                  </div>
+              }
+            </>
+            : null
           }
         </>
-        : null
-      }
-      {selectionState === 2
-        ? <>
-          <h4 style={{marginTop: "10px"}}>Order type</h4>
-          {showOrderTypesLoader
-            ? <div className="center">
-              <Spin />
+        : completed
+          ? <div className="space-between">
+            <div className="row">
+              <span>{selectedCategory.title}</span>
+              <span style={{marginLeft: "5px", marginRight: "5px"}}>
+                {">"}
+              </span>
+              <span>{selectedSubCategory.title}</span>
+              <span style={{marginLeft: "5px", marginRight: "5px"}}>
+                {">"}
+              </span>
+              <span>{selectedOrderTypesData.title}</span>
             </div>
-            : <div className="order_categories_grid">
-              {orderTypesData.map((orderTypesItem:any) => (
-                <p
-                  className="order_info_box_sub_category"
-                  key={orderTypesItem.id}
-                  onClick={() => setSelectedOrderTypesData(orderTypesItem)}
-                >
-                  {orderTypesItem.title}
-                </p>
-              ))}
-            </div>
-          }
-        </>
-        : null
+            <FormOutlined
+              style={{
+                color: "#4157ff",
+                fontSize: "18px",
+                cursor: "pointer"
+              }}
+              onClick={() => props.openBox()}
+            />
+          </div>
+          : <div className="row">
+            <h3 style={{margin: 0}}>Order information</h3>
+            <p className="order_time_badge">
+                  2 min
+            </p>
+          </div>
       }
     </div>
   );

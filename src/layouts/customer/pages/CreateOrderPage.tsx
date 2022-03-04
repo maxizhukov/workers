@@ -58,10 +58,14 @@ export default function CreateOrderPage() {
 
           <h3 className="order_page_container_title">Get rid of bulky items</h3>
 
-          <OrderCategories open={true} />
-          <OrderInformation open={true} />
-          <OrderDate open={true} />
-          <OrderAuthentication open={true} />
+          <OrderCategories
+            open={openContainer === 0}
+            goNext={() => setOpenContainer(1)}
+            openBox={() => setOpenContainer(0)}
+          />
+          <OrderInformation open={openContainer === 1} />
+          <OrderDate open={openContainer === 2} />
+          <OrderAuthentication open={openContainer === 3} />
 
         </form>
       </div>

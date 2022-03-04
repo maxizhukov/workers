@@ -5,7 +5,6 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import Autocomplete from "../Autocomplete/Autocomplete";
 import ImageDragAndDrop from "../ImageDragAndDrop/ImageDragAndDrop";
-import closeImage from "../../assets/images/close.png";
 import Button from "../Button/Button";
 
 interface IProps {
@@ -15,13 +14,16 @@ interface IProps {
 export default function OrderInformation(props:IProps) {
 
   const [files, setFiles] = useState<any>([]);
+  const [completed, setCompleted] = useState<any>(false);
 
   const formik = useFormik({
     initialValues: {
-      title: ""
+      title: "",
+      description: ""
     },
     validationSchema: Yup.object().shape({
       title: Yup.string().required(),
+      description: Yup.string().required()
     }),
     onSubmit: async () => {
       console.log("Submit");
@@ -98,16 +100,22 @@ export default function OrderInformation(props:IProps) {
             saveAddress={(address:any) => console.log(address)}
             label={"Adress where work should be completed"}
           />
+          <div className="order_info_box_button_box">
+            <Button
+              text="Submit"
+              type="primary"
+            />
+          </div>
         </>
-        : null
+        : completed
+          ? <></>
+          : <div className="row">
+            <h3 style={{margin: 0}}>Order information</h3>
+            <p className="order_time_badge">
+              2 min
+            </p>
+          </div>
       }
-
-      <div className="order_info_box_button_box">
-        <Button
-          text="Submit"
-          type="primary"
-        />
-      </div>
     </div>
   );
 }
