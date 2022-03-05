@@ -19,11 +19,16 @@ export default function OrderInformation(props:IProps) {
   const formik = useFormik({
     initialValues: {
       title: "",
-      description: ""
+      description: "",
+      country: "",
+      city: "",
+      zipCode: "",
+      address: ""
     },
     validationSchema: Yup.object().shape({
       title: Yup.string().required(),
-      description: Yup.string().required()
+      description: Yup.string().required(),
+      address: Yup.string().required()
     }),
     onSubmit: async () => {
       console.log("Submit");
@@ -38,6 +43,10 @@ export default function OrderInformation(props:IProps) {
     const copyArray = [...files];
     copyArray.splice(idx, 1);
     setFiles(copyArray);
+  };
+
+  const handleAddressInput = (address:any) => {
+    console.log(address);
   };
 
   return(
@@ -56,14 +65,14 @@ export default function OrderInformation(props:IProps) {
 			  />
 			  <div style={{height: "20px"}} />
 			  <FormikInput
-				  htmlFor="title"
-				  name="title"
-				  value={formik.values.title}
+				  htmlFor="description"
+				  name="description"
+				  value={formik.values.description}
 				  disabled={false}
 				  handleChange={formik.handleChange}
 				  onBlur={formik.handleBlur}
 				  label={"Describe what exactly do you need"}
-				  placeholder={"title"}
+				  placeholder={"description"}
 				  type={"textField"}
 				  rows={4}
 			  />
@@ -97,9 +106,10 @@ export default function OrderInformation(props:IProps) {
 			  </div>
           <div style={{height: "20px"}} />
           <Autocomplete
-            saveAddress={(address:any) => console.log(address)}
+            saveAddress={(address:any) => handleAddressInput(address)}
             label={"Adress where work should be completed"}
           />
+
           <div className="order_info_box_button_box">
             <Button
               text="Submit"

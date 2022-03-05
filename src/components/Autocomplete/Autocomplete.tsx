@@ -18,6 +18,7 @@ export default function Autocomplete(props:IProps) {
     apiKey: "AIzaSyAbuhXyXyLE5wq8mMth9XNq3pt5eRjmgJI",
     options: {
       types: ["address"],
+      fetchDetails: true,
       componentRestrictions: { country: "at" }
     }});
 
@@ -36,24 +37,55 @@ export default function Autocomplete(props:IProps) {
     };
   });
 
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<any>(null);
 
   const [showLocationsMenu, setShowLocationsMenu] = useState(false);
 
   const onPlaceSelected = (place:any) => {
     setShowLocationsMenu(false);
-    setValue(place.description);
-    if (place.description) {
-      const text = place.description;
-      placesService?.getDetails(
-			  {
-			    placeId: place.place_id,
-			  },
-			  () => {
-				  console.log(text);
-			  }
-      );
-    }
+    placesService.getDetails({
+      // eslint-disable-next-line max-len
+      placeId: place.place_id,
+      fields: ["address_components"]
+    }, (res:any) => {
+      let result = {
+        country: "",
+        city: "",
+        postalCode: "",
+        address: ""
+      };
+      // Extract country, city and postal code
+      let houseNumber = "";
+      res.address_components.map((addressComponent:any) => {
+        // Extract country
+        if (addressComponent.types.includes("country")) {
+          result = {...result, country: addressComponent.short_name};
+        }
+        // Extract city
+        if (addressComponent.types.includes("locality")) {
+          result = {...result, city: addressComponent.long_name};
+        }
+        // Extract postal code
+        if (addressComponent.types.includes("postal_code")) {
+          result = {...result, postalCode: addressComponent.long_name};
+        }
+        // Extract full address
+        // Street
+        if (addressComponent.types.includes("route")) {
+          result = {...result, address: addressComponent.long_name};
+        }
+        // Number
+
+        if (addressComponent.types.includes("street_number")) {
+          houseNumber = addressComponent.long_name;
+        }
+      });
+      if (houseNumber) {
+        result = {...result, address: result.address + " " + houseNumber};
+      }
+      setValue(`${result.address}, ${result.postalCode}, ${result.city}`);
+      props.saveAddress(result);
+    });
   };
 
   return(
