@@ -1,6 +1,7 @@
 import React from "react";
 import { Input } from "antd";
 const { TextArea } = Input;
+import "./Inputs.css";
 
 interface CustomInputProps {
 	htmlFor: string
@@ -14,43 +15,49 @@ interface CustomInputProps {
 	style?: any;
 	type?: "textField" | "number";
 	rows?: number;
+	error?: string | undefined;
 }
 
-export default function FormikInput(
-  {name, placeholder, value, disabled, handleChange,
-    htmlFor, onBlur, label, style, type, rows}
-		: CustomInputProps) {
+export default function FormikInput(props:CustomInputProps) {
 
   return (
     <div
-      style={style}
-      className="simple_input">
+      style={props.style}
+      className="formik_input">
       <label
-        className="simple_label"
-        htmlFor={htmlFor}
+        className="formik_label"
+        htmlFor={props.htmlFor}
       >
-        {label}
+        {props.label}
       </label>
-      {type && type === "textField"
+      {props.type && props.type === "textField"
         ? <TextArea
-          rows={rows ? rows : 4}
-          name={name}
-          placeholder={placeholder}
-          disabled = {disabled}
-          value = {value}
-          onChange={handleChange}
-          onBlur={onBlur}
+          rows={props.rows ? props.rows : 4}
+          name={props.name}
+          placeholder={props.placeholder}
+          disabled = {props.disabled}
+          value = {props.value}
+          onChange={props.handleChange}
+          onBlur={props.onBlur}
         />
         : <Input
-          name={name}
-          type={htmlFor === "password" ? "password" : "text"}
-          placeholder={placeholder}
-          disabled = {disabled}
-          value = {value}
-          onChange={handleChange}
-          onBlur={onBlur}
+          name={props.name}
+          type={props.htmlFor === "password" ? "password" : "text"}
+          placeholder={props.placeholder}
+          disabled = {props.disabled}
+          value = {props.value}
+          onChange={props.handleChange}
+          onBlur={props.onBlur}
         />
       }
+      {props.error
+		  ? <p
+			  className="input_error"
+			  style={{ fontSize: "10px" }}
+		  >
+			  {props.error}
+		  </p>
+		  : null}
     </div>
   );
 }

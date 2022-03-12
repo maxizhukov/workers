@@ -1,74 +1,110 @@
 import React, {useEffect, useState} from "react";
 import "./styles.css";
-import {useLocation} from "react-router-dom";
-import {Select} from "antd";
-import {useFormik} from "formik";
-import * as Yup from "yup";
-import {categoriesService} from "../../../services/categories.service";
 import OrderInformation from "../../../components/OrderBoxes/OrderInformation";
 import OrderDate from "../../../components/OrderBoxes/OrderDate";
 import OrderCategories from "../../../components/OrderBoxes/OrderCategories";
 import OrderAuthentication from "../../../components/OrderBoxes/OrderAuthentication";
-
-const { Option } = Select;
+import Button from "../../../components/Button/Button";
 
 export default function CreateOrderPage() {
-  const { state } = useLocation();
 
-  const [categoriesData, setCategoriesData] = useState([]);
   const [openContainer, setOpenContainer] = useState(0);
-
-  const getData = async () => {
-    const categories = await new categoriesService().getAllCategories();
-    if (categories && categories.status) {
-      setCategoriesData(categories.data);
+  const [userAuthenticated, setUserAuthenticated] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [providedData, setProvidedData] = useState<any>({
+    categories: {
+      category: {},
+      subCategory: {},
+      orderType: {}
+    },
+    information: {
+      title: "",
+      description: "",
+      country: "",
+      city: "",
+      zipCode: "",
+      address: ""
+    },
+    date: {
+      date: "",
+      time: ""
+    },
+    user: {
+      email: ""
     }
-  };
+  });
 
   useEffect(() => {
-    getData();
-  }, []);
+    let valid = true;
+    Object.keys(providedData).map((providedDataItem:any) => {
+      Object.keys(providedData[providedDataItem]).map((providedDataSubItem:string) => {
+        if (
+          !providedData[providedDataItem][providedDataSubItem]
+            && providedData[providedDataItem][providedDataSubItem] !== 0) {
+          valid = false;
+        }
+      });
+    });
+    if (!userAuthenticated) {
+      valid = false;
+    }
+    setFormIsValid(valid);
+  }, [providedData, userAuthenticated]);
 
-  const formik = useFormik({
-    initialValues: {
-      search: "",
-      lang: "",
-      exampleTitle: "",
-      exampleDescription: "",
-      parentCategory: "",
-      parentSubCategory: ""
-    },
-    validationSchema: Yup.object().shape({
-      search: Yup.string().required(),
-      lang: Yup.string().required(),
-      exampleTitle: Yup.string().required(),
-      exampleDescription: Yup.string().required(),
-      parentCategory: Yup.string().required(),
-      parentSubCategory: Yup.string().required()
-    }),
-    onSubmit: async () => {
-      console.log("Submit");
-    },
-  });
+  const setValues = (values:any, parent:string) => {
+    const copiedData = {...providedData, [parent]: values};
+    setProvidedData(copiedData);
+  };
 
   return(
     <div className="order_page">
       <div className="order_page_container">
-        <form>
-
+        <div>
           <h3 className="order_page_container_title">Get rid of bulky items</h3>
-
           <OrderCategories
             open={openContainer === 0}
-            goNext={() => setOpenContainer(1)}
+            goNext={(values:any) => {
+              setValues(values, "categories");
+              setOpenContainer(1);
+            }}
             openBox={() => setOpenContainer(0)}
           />
-          <OrderInformation open={openContainer === 1} />
-          <OrderDate open={openContainer === 2} />
-          <OrderAuthentication open={openContainer === 3} />
+          <OrderInformation
+            open={openContainer === 1}
+            goNext={(values:any) => {
+              setValues(values, "information");
+              setOpenContainer(2);
+            }}
+            openBox={() => setOpenContainer(1)}
+          />
+          <OrderDate
+            open={openContainer === 2}
+            goNext={(values:any) => {
+              setValues(values, "date");
+              setOpenContainer(3);
+            }}
+            openBox={() => setOpenContainer(2)}
+          />
+          {!userAuthenticated
+            ? <OrderAuthentication
+              open={openContainer === 3}
+              goNext={(values:any) => {
+                setValues(values, "user");
+                setUserAuthenticated(true);
+              }}
+            />
+            : null
+          }
 
-        </form>
+          <Button
+            text="Create a contract"
+            type={"primary"}
+            disabled={!formIsValid}
+          />
+
+        </div>
       </div>
+      <div style={{height: "30px"}} />
     </div>
   );
 }

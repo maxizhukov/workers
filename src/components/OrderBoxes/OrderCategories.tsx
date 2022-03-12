@@ -7,10 +7,11 @@ import { Spin } from "antd";
 import {orderTypesService} from "../../services/orderTypes.service";
 import {FormOutlined} from "@ant-design/icons";
 import {CloseOutlined} from "@ant-design/icons";
+import Button from "../Button/Button";
 
 interface IProps {
   open: boolean;
-  goNext: () => void;
+  goNext: (values:any) => void;
   openBox: () => void;
 }
 
@@ -36,6 +37,8 @@ export default function OrderCategories(props:IProps) {
   const [selectedCategory, setSelectedCategory] = useState<any>({});
   const [selectedSubCategory, setSelectedSubCategory] = useState<any>({});
   const [selectedOrderTypesData, setSelectedOrderTypesData] = useState<any>({});
+
+  const [disableButton, setDisableButton] = useState(false);
 
   const getCategories = async () => {
     await new categoriesService().getAllCategories()
@@ -92,7 +95,11 @@ export default function OrderCategories(props:IProps) {
   const handleOrderTypeSelect = (orderType:any) => {
     setSelectedOrderTypesData(orderType);
     setCompleted(true);
-    props.goNext();
+    props.goNext({
+      category: selectedCategory,
+      subCategory: selectedSubCategory,
+      orderType: orderType
+    });
   };
 
   // Clear states
@@ -114,6 +121,21 @@ export default function OrderCategories(props:IProps) {
     setSelectionState(2);
     setSelectedOrderTypesData({});
   };
+
+  useEffect(() => {
+    if (
+      Object.keys(selectedCategory)
+        && Object.keys(selectedCategory).length
+      && Object.keys(selectedSubCategory)
+      && Object.keys(selectedSubCategory).length
+        && Object.keys(selectedOrderTypesData)
+        && Object.keys(selectedOrderTypesData).length
+    ) {
+      setDisableButton(false);
+    } else {
+      setDisableButton(true);
+    }
+  }, [selectedCategory, selectedSubCategory, selectedOrderTypesData]);
 
   return(
     <div className="order_info_box">
@@ -209,6 +231,18 @@ export default function OrderCategories(props:IProps) {
             </>
             : null
           }
+          <div className="order_info_box_button_box">
+            <Button
+              text="Submit"
+              type="primary"
+              disabled={disableButton}
+              onClick={() => props.goNext({
+                category: selectedCategory,
+                subCategory: selectedSubCategory,
+                orderType: selectedOrderTypesData
+              })}
+            />
+          </div>
         </>
         : completed
           ? <div className="space-between">

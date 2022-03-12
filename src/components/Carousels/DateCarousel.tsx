@@ -51,7 +51,11 @@ const CustomLeftArrow = ({ onClick, ...rest }:any) => {
   />;
 };
 
-export default function DateCarousel() {
+interface IProps {
+  setSelectedDate: (date:string) => void;
+}
+
+export default function DateCarousel(props:IProps) {
   const { t } = useTranslation();
 
   const [dates, setDates] = useState<any>([]);
@@ -75,6 +79,11 @@ export default function DateCarousel() {
     return dateArray;
   };
 
+  const handleSelectDate = (date:any) => {
+    setSelectedDate(date);
+    props.setSelectedDate(date);
+  };
+
   return(
     <Carousel
       responsive={responsive}
@@ -91,7 +100,7 @@ export default function DateCarousel() {
               : "carousel_date_container"
             }
             key={date}
-            onClick={() => setSelectedDate(date)}
+            onClick={() => handleSelectDate(date)}
           >
             <div>
               <p className={date === selectedDate

@@ -22,6 +22,53 @@
       "4": "Thursday",
       "5": "Friday",
       "6": "Saturday"
+    },
+    "time_ranges": {
+      "0": "Any time",
+      "1": "From 8:00 to 12:00",
+      "2": "From 12:00 to 18:00",
+      "3": "From 18:00 to 22:00"
+    }
+  },
+  "authentication": {
+    "registration": {
+      "registerButton": "Sign Up"
+    },
+    "login": {
+      "loginButton": "Sign In"
+    },
+    "labels": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "placeholders": {
+      "firstName": "Max",
+      "email": "max@musterman.at",
+      "password": "********",
+      "confirmPassword": "********"
+    },
+    "validations": {
+      "confirmPassword": "Password are not same"
+    }
+  },
+  "validation": {
+    "required": "{{field}} is required field",
+    "emailValidation": "Email is not valid",
+    "passwordLength": "Password should contain at least 8 signs",
+    "passwordValidation": "Password should contain specials signs"
+  },
+  "errors": {
+    "notificationTitles": {
+      "internal": "Ooooop, it's our fault! PLease contact support and show this error:",
+      "validation": "Something went wrong!"
+    },
+    "messages": {
+      "email_registered": "This email was already registered",
+      "not_activated": "You didn't verified your account",
+      "credentials_error": "Email or password is wrong"
     }
   }
 }

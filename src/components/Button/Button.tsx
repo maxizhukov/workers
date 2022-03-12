@@ -6,7 +6,8 @@ interface IButtonProps {
 	type: "secondary" | "primary";
 	style?: any;
 	disabled?: boolean;
-	htmlType?: "submit"
+	htmlType?: "submit";
+	onClick?: () => void;
 }
 
 export default function Button(props:IButtonProps) {
@@ -16,6 +17,7 @@ export default function Button(props:IButtonProps) {
       style={props.style ? props.style : {}}
       disabled={props.disabled}
 	  type={props.htmlType}
+	  onClick={() => props.onClick ? props.onClick() : null}
     >
       {props.text}
     </button>

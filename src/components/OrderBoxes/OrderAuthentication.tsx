@@ -7,6 +7,7 @@ const { TabPane } = Tabs;
 
 interface IProps {
 	open: boolean;
+	goNext: (values:any) => void;
 }
 
 export default function OrderAuthentication(props:IProps) {
@@ -18,10 +19,14 @@ export default function OrderAuthentication(props:IProps) {
       {props.open
         ? <Tabs defaultActiveKey="1" >
           <TabPane tab="Register" key="1">
-            <OrderRegister />
+            <OrderRegister
+              goNext={props.goNext}
+            />
           </TabPane>
           <TabPane tab="Login" key="2">
-            <OrderLogin />
+            <OrderLogin
+              goNext={props.goNext}
+            />
           </TabPane>
         </Tabs>
         : completed

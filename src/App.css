@@ -42,3 +42,7 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.ant_notification_error {
+  background-color: red;
+}

@@ -6,8 +6,15 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import FormikInput from "../Inputs/FormikInput";
 import Button from "../Button/Button";
+import {useTranslation} from "react-i18next";
+import {authenticationService} from "../../services/authentication.service";
 
-export default function OrderRegister() {
+interface IProps {
+  goNext: (values:any) => void;
+}
+
+export default function OrderRegister(props:IProps) {
+  const { t } = useTranslation();
 
   const responseGoogle = async (res:any) => {
     console.log(res);
@@ -23,25 +30,41 @@ export default function OrderRegister() {
       confirmPassword: ""
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("first name"),
-      email: Yup.string().email("email").required("required"),
+      name: Yup.string().required(t(
+        "validation.required",
+        {field: t("authentication.labels.firstName")}
+      )),
+      email: Yup.string().required(t(
+        "validation.required",
+        {field: t("authentication.labels.email")}
+      )).email(t("validation.emailValidation")),
       password: Yup.string()
-        .required("required")
-        .min(8, "min length")
-        .matches(/^(?=.*[A-Za-z])(?=.*\d)[!?=+-@#$%^&*A-Za-zÜüÖöÄäß\d]{8,50}$/, "Match"),
+        .required(t(
+          "validation.required",
+          {field: t("authentication.labels.password")}
+        ))
+        .min(8, t("validation.passwordLength"))
+        .matches(/^(?=.*[A-Za-z])(?=.*\d)[!?=+-@#$%^&*A-Za-zÜüÖöÄäß\d]{8,50}$/,
+          t("validation.passwordValidation")
+        ),
       confirmPassword: Yup.string()
-        .min(8, "min")
+        .required("")
         .when("password", {
           is: (val:any) => !!(val && val.length > 0),
           then: Yup.string().oneOf(
             [Yup.ref("password")],
-            "not same"
+            t("authentication.validations.confirmPassword")
           ),
         })
     }),
     // handle form submitting
     onSubmit: async () => {
-      console.log("Submit");
+      // Removing confirm password
+      const {confirmPassword, ...registerData} = formik.values;
+      const registerResponse = await new authenticationService().register(registerData);
+      if (registerResponse && registerResponse.status) {
+        props.goNext(registerData.email);
+      }
     },
   });
 
@@ -70,110 +93,82 @@ export default function OrderRegister() {
           <div className="auth_line" />
         </div>
         <form onSubmit={formik.handleSubmit}>
-          <div style={{ position: "relative" }}>
-            <FormikInput
-              htmlFor="name"
-              name="name"
-              value={formik.values.name}
-              disabled={false}
-              handleChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              label={"Name"}
-              placeholder="Max"
-              style={{
-                width: "240px"
-              }}
-            />
-            {formik.errors.name && formik.touched.name && (
-              <p
-                className="input_error"
-                style={{ fontSize: "10px" }}
-              >
-                {formik.errors.name}
-              </p>
-            )}
-          </div>
+          <FormikInput
+            htmlFor="name"
+            name="name"
+            value={formik.values.name}
+            disabled={false}
+            handleChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            label={t("authentication.labels.firstName")}
+            placeholder={t("authentication.placeholders.firstName")}
+            style={{
+              width: "240px"
+            }}
+            error={formik.errors.name && formik.touched.name ? formik.errors.name : undefined}
+          />
 
           <div style={{height: "10px"}} />
 
-          <div style={{ position: "relative" }}>
-            <FormikInput
-              htmlFor="email"
-              name="email"
-              value={formik.values.email}
-              disabled={false}
-              handleChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              label={"Email"}
-              placeholder="mail@mail.at"
-              style={{
-                width: "240px"
-              }}
-            />
-            {formik.errors.email && formik.touched.email && (
-              <p
-                className="input_error"
-                style={{ fontSize: "10px" }}
-              >
-                {formik.errors.email}
-              </p>
-            )}
-          </div>
+          <FormikInput
+            htmlFor="email"
+            name="email"
+            value={formik.values.email}
+            disabled={false}
+            handleChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            label={t("authentication.labels.email")}
+            placeholder={t("authentication.placeholders.email")}
+            style={{
+              width: "240px"
+            }}
+            error={formik.errors.email && formik.touched.email ? formik.errors.email : undefined}
+          />
 
           <div style={{height: "10px"}} />
 
-          <div style={{ position: "relative" }}>
-            <FormikInput
-              htmlFor="password"
-              name="password"
-              value={formik.values.password}
-              disabled={false}
-              handleChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              label={"Password"}
-              placeholder="******"
-              style={{
-                width: "240px"
-              }}
-            />
-            {formik.errors.password && formik.touched.password && (
-              <p
-                className="input_error"
-                style={{ fontSize: "10px" }}
-              >
-                {formik.errors.password}
-              </p>
-            )}
-          </div>
+          <FormikInput
+            htmlFor="password"
+            name="password"
+            value={formik.values.password}
+            disabled={false}
+            handleChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            label={t("authentication.labels.password")}
+            placeholder={t("authentication.placeholders.password")}
+            style={{
+              width: "240px"
+            }}
+            error={
+              formik.errors.password
+              && formik.touched.password
+                ? formik.errors.password
+                : undefined}
+          />
 
           <div style={{height: "10px"}} />
 
-          <div style={{ position: "relative" }}>
-            <FormikInput
-              htmlFor="password"
-              name="confirmPassword"
-              value={formik.values.confirmPassword}
-              disabled={false}
-              handleChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              label={"Confirm Password"}
-              placeholder="******"
-              style={{
-                width: "240px"
-              }}
-            />
-            {formik.errors.confirmPassword && formik.touched.confirmPassword && (
-              <p
-                className="input_error"
-                style={{ fontSize: "10px" }}
-              >
-                {formik.errors.confirmPassword}
-              </p>
-            )}
-          </div>
+          <FormikInput
+            htmlFor="password"
+            name="confirmPassword"
+            value={formik.values.confirmPassword}
+            disabled={false}
+            handleChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            label={t("authentication.labels.confirmPassword")}
+            placeholder={t("authentication.placeholders.confirmPassword")}
+            style={{
+              width: "240px"
+            }}
+            error={
+              formik.errors.confirmPassword
+                && formik.touched.confirmPassword
+                ? formik.errors.confirmPassword
+                : undefined}
+          />
 
           <Button
-            text={"Create account"}
+            text={t("authentication.registration.registerButton")}
             type={"primary"}
             htmlType={"submit"}
             style={{
@@ -181,6 +176,7 @@ export default function OrderRegister() {
               marginBottom: "15px",
               width: "240px"
             }}
+            disabled={!(formik.isValid && formik.dirty)}
           />
 
         </form>
