@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import FormikInput from "../Inputs/FormikInput";
 import Button from "../Button/Button";
 import {useTranslation} from "react-i18next";
-import {authenticationService} from "../../services/authentication.service";
+import {customerAuthenticationService} from "../../services/customer.authentication.service";
 
 interface IProps {
   goNext: (values:any) => void;
@@ -44,7 +44,7 @@ export default function OrderLogin(props:IProps) {
     }),
     // handle form submitting
     onSubmit: async () => {
-      const loginResponse = await new authenticationService().login(formik.values);
+      const loginResponse = await new customerAuthenticationService().login(formik.values);
       if (loginResponse && loginResponse.status) {
         props.goNext(formik.values.email);
       }

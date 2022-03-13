@@ -70,5 +70,18 @@
       "not_activated": "You didn't verified your account",
       "credentials_error": "Email or password is wrong"
     }
+  },
+  "contractor": {
+    "auth": {
+      "login": {
+        "title": "Sign in to Worket as Contractor",
+        "forgot": "Forgot Password?",
+        "register": "Sign up as Contractor"
+      },
+      "register": {
+        "title": "Sign up to Worket as Contractor",
+        "login": "Sign in as Contractor"
+      }
+    }
   }
 }

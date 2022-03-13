@@ -1,19 +1,15 @@
 import React from "react";
 import { Routes, Route} from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import CustomerHeader from "../../components/Headers/CustomerHeader";
-import CreateOrderPage from "./pages/CreateOrderPage";
+import CustomerAuthRouter from "./routers/AuthRouter";
+import CustomerHomeRouter from "./routers/CustomerHomeRouter";
 
 export default function CustomerRouter() {
   return(
-    <>
-      <CustomerHeader />
-      <main>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/createOrder" element={<CreateOrderPage />} />
-        </Routes>
-      </main>
-    </>
+    <main>
+      <Routes>
+        <Route path="/auth/*" element={<CustomerAuthRouter />} />
+        <Route path="/*" element={<CustomerHomeRouter />} />
+      </Routes>
+    </main>
   );
 }

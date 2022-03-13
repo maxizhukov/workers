@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles.css";
+import {Spin} from "antd";
 
 interface IButtonProps {
 	text: string;
@@ -8,6 +9,7 @@ interface IButtonProps {
 	disabled?: boolean;
 	htmlType?: "submit";
 	onClick?: () => void;
+	loading?: boolean;
 }
 
 export default function Button(props:IButtonProps) {
@@ -19,7 +21,10 @@ export default function Button(props:IButtonProps) {
 	  type={props.htmlType}
 	  onClick={() => props.onClick ? props.onClick() : null}
     >
-      {props.text}
+      {props.loading
+        ? <Spin />
+        : props.text
+      }
     </button>
   );
 }

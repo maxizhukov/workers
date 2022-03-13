@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import FormikInput from "../Inputs/FormikInput";
 import Button from "../Button/Button";
 import {useTranslation} from "react-i18next";
-import {authenticationService} from "../../services/authentication.service";
+import {customerAuthenticationService} from "../../services/customer.authentication.service";
 
 interface IProps {
   goNext: (values:any) => void;
@@ -61,7 +61,7 @@ export default function OrderRegister(props:IProps) {
     onSubmit: async () => {
       // Removing confirm password
       const {confirmPassword, ...registerData} = formik.values;
-      const registerResponse = await new authenticationService().register(registerData);
+      const registerResponse = await new customerAuthenticationService().register(registerData);
       if (registerResponse && registerResponse.status) {
         props.goNext(registerData.email);
       }

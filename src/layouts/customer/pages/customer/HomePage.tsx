@@ -1,10 +1,10 @@
 import React, {useRef} from "react";
-import CustomerWorkSearch from "../../../components/Search/CustomerWorkSearch";
+import CustomerWorkSearch from "../../../../components/Search/CustomerWorkSearch";
 import "./styles.css";
-import CategoryCard from "../../../components/Cards/CategoryCard/CategoryCard";
-import serviceImage from "../../../assets/images/service.svg";
+import CategoryCard from "../../../../components/Cards/CategoryCard/CategoryCard";
+import serviceImage from "../../../../assets/images/service.svg";
 import {HomeOutlined} from "@ant-design/icons";
-import Footer from "../../../components/Footer/Footer";
+import Footer from "../../../../components/Footer/Footer";
 
 // eslint-disable-next-line max-len
 const bg = "https://d1b747rczec55w.cloudfront.net/assets/home-bg-4dc4b66b752c785811e5c6b1d3df1f90b953d05e0ff367ff34f8823f34a0036a.svg";

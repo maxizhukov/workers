@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import "./styles.css";
-import OrderInformation from "../../../components/OrderBoxes/OrderInformation";
-import OrderDate from "../../../components/OrderBoxes/OrderDate";
-import OrderCategories from "../../../components/OrderBoxes/OrderCategories";
-import OrderAuthentication from "../../../components/OrderBoxes/OrderAuthentication";
-import Button from "../../../components/Button/Button";
+import OrderInformation from "../../../../components/OrderBoxes/OrderInformation";
+import OrderDate from "../../../../components/OrderBoxes/OrderDate";
+import OrderCategories from "../../../../components/OrderBoxes/OrderCategories";
+import OrderAuthentication from "../../../../components/OrderBoxes/OrderAuthentication";
+import Button from "../../../../components/Button/Button";
 
 export default function CreateOrderPage() {
 
@@ -56,6 +56,10 @@ export default function CreateOrderPage() {
     setProvidedData(copiedData);
   };
 
+  const sendData = () => {
+    console.log(providedData);
+  };
+
   return(
     <div className="order_page">
       <div className="order_page_container">
@@ -100,6 +104,7 @@ export default function CreateOrderPage() {
             text="Create a contract"
             type={"primary"}
             disabled={!formIsValid}
+            onClick={() => sendData()}
           />
 
         </div>

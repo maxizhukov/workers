@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import Modal from "react-modal";
 import CustomerRouter from "./layouts/customer/router";
 import "antd/dist/antd.css";
+import ContractorRouter from "./layouts/contractor/contractor.router";
 
 function App() {
   // Language changing for all pages
@@ -20,7 +21,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/*" element={<CustomerRouter />} />
-          {/*<Route path="/contractor" element={<ContractorRouter />} />*/}
+          <Route path="/contractor/*" element={<ContractorRouter />} />
           {/*<Route path="/general" element={<GeneralRouter />} />*/}
           {/*<Route path="/admin" element={<AdminRouter />} />*/}
         </Routes>
