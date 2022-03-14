@@ -1,8 +1,8 @@
-export const GET_USER_INFO = "GET_USER_INFO";
+export const SET_USER_INFO = "SET_USER_INFO";
 
-interface getUserInfoAction {
-	type: typeof GET_USER_INFO
+interface setUserInfo {
+	type: typeof SET_USER_INFO
 	payload: any
 }
 
-export type usersTypes = getUserInfoAction
+export type usersTypes = setUserInfo

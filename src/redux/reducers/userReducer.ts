@@ -1,7 +1,4 @@
-import {
-  GET_USER_INFO,
-  usersTypes
-} from "../types/userTypes";
+import {SET_USER_INFO, usersTypes} from "../types/userTypes";
 
 interface DefaultStateI {
 	loading: boolean,
@@ -19,7 +16,7 @@ export const userReducer = (
   state: DefaultStateI = initialState,
   action: usersTypes):DefaultStateI => {
   switch (action.type) {
-  case GET_USER_INFO:
+  case SET_USER_INFO:
     return {
       ...state, userInformation: action.payload,
       loading: false

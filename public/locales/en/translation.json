@@ -100,7 +100,22 @@
         }
       },
       "header": {},
-      "onboarding": {}
+      "onboarding": {
+        "stepper": {
+          "info": {
+            "title": "Personal information",
+            "labels": {
+              "firstName": "First Name",
+              "lastName": "Last Name",
+              "sex": "Sex",
+              "birth": "Births day"
+            }
+          },
+          "address": "Address",
+          "description": "Descriptions",
+          "verification": "Verification"
+        }
+      }
     }
   }
 }

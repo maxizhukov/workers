@@ -4,12 +4,13 @@ import FormikInput from "../../../components/Inputs/FormikInput";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import Button from "../../../components/Button/Button";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 // eslint-disable-next-line max-len
 import {contractorAuthenticationService} from "../../../services/contractor/contractors.authentication.service";
 
 export default function ContractorLoginPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [submitButtonLoading, setSubmitButtonLoading] = useState(false);
 
@@ -30,7 +31,10 @@ export default function ContractorLoginPage() {
     }),
     onSubmit: async (e:any) => {
       setSubmitButtonLoading(true);
-      await new contractorAuthenticationService().login(formik.values);
+      const loginResponse = await new contractorAuthenticationService().login(formik.values);
+      if (loginResponse && loginResponse.status) {
+        navigate("/contractor");
+      }
       setSubmitButtonLoading(false);
     },
   });
