@@ -5,11 +5,14 @@ import * as Yup from "yup";
 import {Link} from "react-router-dom";
 import FormikInput from "../../../components/Inputs/FormikInput";
 import Button from "../../../components/Button/Button";
+// eslint-disable-next-line max-len
+import {contractorAuthenticationService} from "../../../services/contractor/contractors.authentication.service";
 
 export default function ContractorRegisterPage() {
   const { t } = useTranslation();
 
   const [submitButtonLoading, setSubmitButtonLoading] = useState(false);
+  const [showSuccessLayout, setShowSuccessLayout] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -52,123 +55,136 @@ export default function ContractorRegisterPage() {
         })
     }),
     onSubmit: async (e:any) => {
-      console.log("Submit");
+      // Removing confirm password
+      setSubmitButtonLoading(true);
+      const {confirmPassword, ...registerData} = formik.values;
+      const registerResponse = await new contractorAuthenticationService().register(registerData);
+      setSubmitButtonLoading(false);
+      if (registerResponse && registerResponse.status) {
+        setShowSuccessLayout(true);
+      }
     },
   });
 
   return(
-    <form className="contractor_auth_page_content_box">
-      <h1>{t("contractor.auth.register.title")}</h1>
+    showSuccessLayout
+      ? <div className="contractor_auth_page_content_success_box">
+        <h2>{t("contractor.auth.register.success.title")}</h2>
+        <p>{t("contractor.auth.register.success.text", {email: formik.values.email})}</p>
+        <Link to={"/contractor/auth/login"}>{t("contractor.auth.register.success.link")}</Link>
+      </div>
+      : <form className="contractor_auth_page_content_box" onSubmit={formik.handleSubmit}>
+        <h1>{t("contractor.auth.register.title")}</h1>
 
-      <FormikInput
-        htmlFor="firstName"
-        name="firstName"
-        value={formik.values.firstName}
-        disabled={false}
-        handleChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        label={t("authentication.labels.firstName")}
-        placeholder={t("authentication.placeholders.firstName")}
-        error={
-          formik.errors.firstName &&
-            formik.touched.firstName
-            ? formik.errors.firstName
-            : undefined
-        }
-      />
+        <FormikInput
+          htmlFor="firstName"
+          name="firstName"
+          value={formik.values.firstName}
+          disabled={false}
+          handleChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          label={t("authentication.labels.firstName")}
+          placeholder={t("authentication.placeholders.firstName")}
+          error={
+            formik.errors.firstName &&
+                      formik.touched.firstName
+              ? formik.errors.firstName
+              : undefined
+          }
+        />
 
-      <div style={{height: "10px"}} />
+        <div style={{height: "10px"}} />
 
-      <FormikInput
-        htmlFor="lastName"
-        name="lastName"
-        value={formik.values.lastName}
-        disabled={false}
-        handleChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        label={t("authentication.labels.lastName")}
-        placeholder={t("authentication.placeholders.lastName")}
-        error={
-          formik.errors.lastName &&
-            formik.touched.lastName
-            ? formik.errors.lastName
-            : undefined
-        }
-      />
+        <FormikInput
+          htmlFor="lastName"
+          name="lastName"
+          value={formik.values.lastName}
+          disabled={false}
+          handleChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          label={t("authentication.labels.lastName")}
+          placeholder={t("authentication.placeholders.lastName")}
+          error={
+            formik.errors.lastName &&
+                      formik.touched.lastName
+              ? formik.errors.lastName
+              : undefined
+          }
+        />
 
-      <div style={{height: "10px"}} />
+        <div style={{height: "10px"}} />
 
-      <FormikInput
-        htmlFor="email"
-        name="email"
-        value={formik.values.email}
-        disabled={false}
-        handleChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        label={t("authentication.labels.email")}
-        placeholder={t("authentication.placeholders.email")}
-        error={formik.errors.email && formik.touched.email ? formik.errors.email : undefined}
-      />
+        <FormikInput
+          htmlFor="email"
+          name="email"
+          value={formik.values.email}
+          disabled={false}
+          handleChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          label={t("authentication.labels.email")}
+          placeholder={t("authentication.placeholders.email")}
+          error={formik.errors.email && formik.touched.email ? formik.errors.email : undefined}
+        />
 
-      <div style={{height: "10px"}} />
+        <div style={{height: "10px"}} />
 
-      <FormikInput
-        htmlFor="password"
-        name="password"
-        value={formik.values.password}
-        disabled={false}
-        handleChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        label={t("authentication.labels.password")}
-        placeholder={t("authentication.placeholders.password")}
-        error={
-          formik.errors.password
-					&& formik.touched.password
-            ? formik.errors.password
-            : undefined}
-      />
+        <FormikInput
+          htmlFor="password"
+          name="password"
+          value={formik.values.password}
+          disabled={false}
+          handleChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          label={t("authentication.labels.password")}
+          placeholder={t("authentication.placeholders.password")}
+          error={
+            formik.errors.password
+                      && formik.touched.password
+              ? formik.errors.password
+              : undefined}
+        />
 
-      <div style={{height: "10px"}} />
+        <div style={{height: "10px"}} />
 
-      <FormikInput
-        htmlFor="confirmPassword"
-        name="confirmPassword"
-        value={formik.values.confirmPassword}
-        disabled={false}
-        handleChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        label={t("authentication.labels.confirmPassword")}
-        placeholder={t("authentication.placeholders.confirmPassword")}
-        error={
-          formik.errors.confirmPassword &&
-            formik.touched.confirmPassword
-            ? formik.errors.confirmPassword
-            : undefined
-        }
-      />
+        <FormikInput
+          htmlFor="password"
+          name="confirmPassword"
+          value={formik.values.confirmPassword}
+          disabled={false}
+          handleChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          label={t("authentication.labels.confirmPassword")}
+          placeholder={t("authentication.placeholders.confirmPassword")}
+          error={
+            formik.errors.confirmPassword &&
+                      formik.touched.confirmPassword
+              ? formik.errors.confirmPassword
+              : undefined
+          }
+        />
 
-      <div style={{height: "10px"}} />
+        <div style={{height: "10px"}} />
 
-      <Button
-        text={t("authentication.registration.registerButton")}
-        type={"primary"}
-        htmlType={"submit"}
-        style={{
-          width: "100%"
-        }}
-        disabled={!(formik.isValid && formik.dirty)}
-        loading={submitButtonLoading}
-      />
+        <Button
+          text={t("authentication.registration.registerButton")}
+          type={"primary"}
+          htmlType={"submit"}
+          style={{
+            width: "100%"
+          }}
+          disabled={!(formik.isValid && formik.dirty)}
+          loading={submitButtonLoading}
+        />
 
-      <p style={{
-        textAlign: "center",
-        marginTop: "20px"
-      }}>
-        <Link to={"/contractor/auth/login"}>
-          {t("contractor.auth.register.login")}
-        </Link>
-      </p>
+        <p style={{
+          textAlign: "center",
+          marginTop: "20px"
+        }}>
+          <Link to={"/contractor/auth/login"}>
+            {t("contractor.auth.register.login")}
+          </Link>
+        </p>
 
-    </form>
+      </form>
   );
 }

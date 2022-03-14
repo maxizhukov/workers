@@ -5,6 +5,8 @@ import {useFormik} from "formik";
 import * as Yup from "yup";
 import Button from "../../../components/Button/Button";
 import {Link} from "react-router-dom";
+// eslint-disable-next-line max-len
+import {contractorAuthenticationService} from "../../../services/contractor/contractors.authentication.service";
 
 export default function ContractorLoginPage() {
   const { t } = useTranslation();
@@ -27,12 +29,14 @@ export default function ContractorLoginPage() {
       ))
     }),
     onSubmit: async (e:any) => {
-      console.log("Submit");
+      setSubmitButtonLoading(true);
+      await new contractorAuthenticationService().login(formik.values);
+      setSubmitButtonLoading(false);
     },
   });
 
   return(
-    <form className="contractor_auth_page_content_box">
+    <form className="contractor_auth_page_content_box" onSubmit={formik.handleSubmit}>
       <h1>{t("contractor.auth.login.title")}</h1>
       <FormikInput
         htmlFor="email"

@@ -46,6 +46,7 @@
     },
     "placeholders": {
       "firstName": "Max",
+      "lastName": "Musterman",
       "email": "max@musterman.at",
       "password": "********",
       "confirmPassword": "********"
@@ -80,8 +81,26 @@
       },
       "register": {
         "title": "Sign up to Worket as Contractor",
-        "login": "Sign in as Contractor"
+        "login": "Sign in as Contractor",
+        "success": {
+          "title": "You have been successfully registered",
+          "text": "Please activate your account with button in email that was send to {{email}}",
+          "link": "Back to login"
+        }
+      },
+      "forget": {
+        "title": "Forget your password?",
+        "btn": "Request new password"
       }
+    },
+    "home": {
+      "sidebar": {
+        "tabs": {
+          "dashboard": "Dashboard"
+        }
+      },
+      "header": {},
+      "onboarding": {}
     }
   }
 }

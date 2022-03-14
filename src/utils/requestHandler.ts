@@ -2,6 +2,7 @@ import axios from "axios";
 import environment from "../environment";
 import {getToken} from "./cookie/token.cookie";
 import {apiErrorHandler} from "./apiErrorHandler";
+import {contractorCookieService} from "../services/cookies/contractor.cookies.service";
 
 interface IRequest {
 	path: string;
@@ -9,17 +10,24 @@ interface IRequest {
 	data?: any;
 	params?: any;
 	showErrorNotification?: boolean;
+	tokenType?: "customer" | "contractor"
 }
 
 export async function requestHandler(props:IRequest) {
   try {
-    const token = await getToken();
+  	let tokenData:any;
+  	if (props.tokenType) {
+      tokenData = props.tokenType === "customer"
+        ? await getToken()
+        : await new contractorCookieService().getTokenData();
+    }
+
     const response = await axios({
       url: `${environment.baseUrl}${props.path}`,
       method: props.method,
       params: props.params,
       data: props.data,
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${tokenData?.token || ""}` },
     });
     return {
       status: response.status,

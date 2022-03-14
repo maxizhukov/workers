@@ -4,6 +4,8 @@ import ContractorLoginPage from "./contractor.login.page";
 import "./styles.css";
 import logo from "../../../assets/images/logo.png";
 import ContractorRegisterPage from "./contractor.register.page";
+import ContractorForgetPage from "./contractor.forget.page";
+import ActivateContractorPage from "./contractor.activate.page";
 
 export default function ContractorAuthRouter() {
   return(
@@ -13,6 +15,8 @@ export default function ContractorAuthRouter() {
           <Route path="/" element={<Navigate to={"/contractor/auth/login"} />} />
           <Route path="/login" element={<ContractorLoginPage />} />
           <Route path="/register" element={<ContractorRegisterPage />} />
+          <Route path="/forgot" element={<ContractorForgetPage />} />
+          <Route path="/activate" element={<ActivateContractorPage />} />
         </Routes>
       </div>
       <div className="contractor_auth_page_banner">

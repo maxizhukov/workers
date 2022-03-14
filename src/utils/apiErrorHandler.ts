@@ -16,9 +16,14 @@ export function apiErrorHandler(status:number, error?: any, showErrorNotificatio
     customHistory.push(`/server-error${previousPath ? `?pathname=${previousPath}` : ""}`);
     return true;
   } else if (status === 401) {
+    const reqUrlType = error.request.responseURL?.split("/")[4];
     // TODO Remove all stored values logout user
     sessionStorage.clear();
-    customHistory.push("/auth");
+    if (reqUrlType === "contractor") {
+      customHistory.push("/contractor/auth/login");
+    } else {
+      customHistory.push("/auth");
+    }
     return true;
   } else {
     console.log(error.response.data);
