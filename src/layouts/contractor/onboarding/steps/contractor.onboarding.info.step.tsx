@@ -1,45 +1,53 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "./styles.css";
 import {connect} from "react-redux";
 import {RootState} from "../../../../redux/reducers/rootReducer";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import {customerAuthenticationService} from "../../../../services/customer.authentication.service";
 import {useTranslation} from "react-i18next";
 import FormikInput from "../../../../components/Inputs/FormikInput";
 import Button from "../../../../components/Button/Button";
+import FormikSelect from "../../../../components/Inputs/FormikSelect";
+import { DatePicker } from "antd";
+import moment, {Moment} from "moment";
+
+interface IData {
+	firstName: string;
+	lastName: string;
+	sex: string;
+	birth: Moment;
+}
 
 interface IProps {
-	data: {
-		firstName: string;
-		lastName: string;
-		sex: string;
-		birth: string;
-	},
-	user?: any
+	data: IData,
+	user?: any;
+	goNext: (values:IData) => void;
 }
 
 function ContractorOnboardingInfoStep(props:IProps) {
   const { t } = useTranslation();
 
-  useEffect(() => {
-  	if (props.data && props.data.firstName) {
-  		formik.setFieldValue("firstName", props.data.firstName);
-      formik.setFieldValue("lastName", props.data.lastName);
-      formik.setFieldValue("sex", props.data.sex);
-      formik.setFieldValue("birth", props.data.birth);
-    } else {
-      formik.setFieldValue("firstName", props.user.userInformation.firstName);
-      formik.setFieldValue("lastName", props.user.userInformation.lastName);
-    }
-  }, [props.data, props.user]);
+  const sexOptions = [
+	  {
+		  value: "m",
+		  title: "Man"
+	  },
+	  {
+		  value: "w",
+		  title: "Woman"
+	  },
+	  {
+		  value: "d",
+		  title: "Diverse"
+	  }
+  ];
 
   const formik = useFormik({
     initialValues: {
       firstName: "",
       lastName: "",
-      sex: "",
-      births: ""
+      sex: "m",
+      birth: moment(new Date())
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required(t(
@@ -54,7 +62,7 @@ function ContractorOnboardingInfoStep(props:IProps) {
         "validation.required",
         {field: t("contractor.home.onboarding.stepper.info.labels.sex")}
       )),
-      births: Yup.string().required(t(
+      birth: Yup.string().required(t(
         "validation.required",
         {field: t("contractor.home.onboarding.stepper.info.labels.birth")}
       ))
@@ -64,6 +72,18 @@ function ContractorOnboardingInfoStep(props:IProps) {
       console.log("Submit");
     },
   });
+
+  useEffect(() => {
+    if (props.data && props.data.firstName) {
+      formik.setFieldValue("firstName", props.data.firstName);
+      formik.setFieldValue("lastName", props.data.lastName);
+      formik.setFieldValue("sex", props.data.sex);
+      formik.setFieldValue("birth", moment(props.data.birth));
+    } else {
+      formik.setFieldValue("firstName", props.user.userInformation.firstName);
+      formik.setFieldValue("lastName", props.user.userInformation.lastName);
+    }
+  }, [props.data, props.user]);
 
   return(
 	  <form onSubmit={formik.handleSubmit}>
@@ -111,10 +131,43 @@ function ContractorOnboardingInfoStep(props:IProps) {
 
 		  <div style={{height: "10px"}} />
 
+		  <FormikSelect
+			  style={{
+				  width: "240px"
+			  }}
+			  value={formik.values.sex}
+			  disabled={false}
+			  handleChange={(value:any) => formik.setFieldValue("sex", value, true)}
+			  label={t("contractor.home.onboarding.stepper.info.labels.sex")}
+			  data={sexOptions}
+		  />
+
+		  <div style={{height: "10px"}} />
+
+		  <div
+			  className="formik_select">
+			  <label
+				  className="formik_label"
+			  >
+				  {t("contractor.home.onboarding.stepper.info.labels.birth")}
+			  </label>
+			  <DatePicker
+				  defaultValue={formik.values.birth}
+				  onChange={(value:any) => {
+					  formik.setFieldValue("birth", moment(value), true);
+				  }}
+				  style={{
+				  	maxWidth: "240px"
+				  }}
+			  />
+		  </div>
+
+		  <div style={{height: "10px"}} />
+
 		  <Button
-			  text={t("authentication.registration.registerButton")}
+			  text={t("contractor.home.onboarding.stepper.btns.next")}
 			  type={"primary"}
-			  htmlType={"submit"}
+			  onClick={() => props.goNext(formik.values)}
 			  style={{
 				  marginTop: "15px",
 				  marginBottom: "15px",

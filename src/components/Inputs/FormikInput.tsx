@@ -12,7 +12,7 @@ interface CustomInputProps {
 	handleChange: any
 	onBlur?: any
 	label: string
-	style?: any;
+	style?: React.CSSProperties;
 	type?: "textField" | "number";
 	rows?: number;
 	error?: string | undefined;

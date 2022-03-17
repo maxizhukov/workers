@@ -8,6 +8,7 @@ import ContractorSidebar from "../../../components/Sidebars/contractor/contracto
 import ContractorHeader from "../../../components/Headers/ContractorHeader";
 import {useDispatch} from "react-redux";
 import {setUser} from "../../../redux/actions/userActions";
+import {contractorOnboardingEnum} from "../../../enums/contractor.enum";
 
 const { Content } = Layout;
 
@@ -24,7 +25,7 @@ export default function ContractorHomeRouter() {
         // Save to redux contractor
         dispatch(setUser(res.data));
         // Navigate onboarding / dashboard
-        setContractorApproved(res.data.approved);
+        setContractorApproved(res.data.approvedStatus === contractorOnboardingEnum.approved);
         setTimeout(() => {
           setShowRouterLoading(false);
         }, 50);

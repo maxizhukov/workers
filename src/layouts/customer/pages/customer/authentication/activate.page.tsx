@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import "./auth.styles.css";
 import { Spin } from "antd";
 import queryString from "query-string";
+// eslint-disable-next-line max-len
 import {customerAuthenticationService} from "../../../../../services/customer.authentication.service";
 
 export default function ActivateCustomerPage () {

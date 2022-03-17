@@ -1,3 +1,17 @@
 .contractor_onboarding_stepper_box {
     padding-top: 30px;
 }
+
+.onboarding_processing_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.onboarding_processing_box > h3 {
+    font-size: 32px;
+}
+
+.onboarding_processing_box > p {
+    font-size: 18px;
+}

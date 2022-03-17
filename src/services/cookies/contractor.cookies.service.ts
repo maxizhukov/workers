@@ -2,7 +2,7 @@ import Cookies from "universal-cookie";
 import {ICookieData} from "../../interface/contractor/auth.interface";
 
 export class contractorCookieService {
-	cookies
+	cookies;
 
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	constructor() {

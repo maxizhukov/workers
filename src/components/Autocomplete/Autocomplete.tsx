@@ -4,8 +4,9 @@ import useGoogle from "react-google-autocomplete/lib/usePlacesAutocompleteServic
 import "./Autocomplete.css";
 
 interface IProps {
-  saveAddress: (address:any) => void
-  label: string
+  saveAddress: (address:any) => void;
+  label: string;
+  style?: React.CSSProperties;
 }
 
 export default function Autocomplete(props:IProps) {
@@ -89,7 +90,7 @@ export default function Autocomplete(props:IProps) {
   };
 
   return(
-    <div>
+    <div style={props.style}>
       <p style={{marginBottom: 0}}>{props.label}</p>
       <Input.Search
         value={value}
