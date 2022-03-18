@@ -130,6 +130,13 @@
             "title": "We are processing your application",
             "text": "It will take maximum 24 hours and you will receive an email from us"
           }
+        },
+        "reject": {
+          "title": "Suddenly your request was rejected!",
+          "text": "But don't give up, you can still come to our team, just make a changes that written below",
+          "reason": "Reject reason:",
+          "description": "Reject description:",
+          "btn": "Edit a form"
         }
       }
     }

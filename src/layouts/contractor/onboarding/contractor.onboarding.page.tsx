@@ -14,6 +14,7 @@ import {connect} from "react-redux";
 import {contractorOnboardingEnum} from "../../../enums/contractor.enum";
 import {requestHandler} from "../../../utils/requestHandler";
 import {apiErrorHandler} from "../../../utils/apiErrorHandler";
+import ContractorOnboardingRejectPage from "./reject.page";
 
 const { Step } = Steps;
 
@@ -129,33 +130,38 @@ function ContractorOnboardingPage(props:IProps) {
           <Lottie options={lottieOptions} width={"60%"}/>
         </div>
         : <>
-          <Steps
-            current={currentStep}
-            onChange={(value:number) => setCurrentStep(value)}
-          >
-            <Step
-              title={t("contractor.home.onboarding.stepper.info.title")}
-              icon={<UserOutlined />}
-            />
-            <Step
-              disabled={currentStep < 1}
-              title={t("contractor.home.onboarding.stepper.address")}
-              icon={<HomeOutlined />}
-            />
-            <Step
-              disabled={currentStep < 2}
-              title={t("contractor.home.onboarding.stepper.description.title")}
-              icon={<SolutionOutlined />}
-            />
-            <Step
-              disabled={currentStep < 3}
-              title={t("contractor.home.onboarding.stepper.verification")}
-              icon={<SafetyOutlined />}
-            />
-          </Steps>
-          <div className="contractor_onboarding_stepper_box">
-            {getCurrentComponent()}
-          </div>
+		  {props.user.userInformation.approvedStatus === contractorOnboardingEnum.rejected
+			  ?	<ContractorOnboardingRejectPage />
+			  : <>
+				  <Steps
+					  current={currentStep}
+					  onChange={(value:number) => setCurrentStep(value)}
+				  >
+					  <Step
+						  title={t("contractor.home.onboarding.stepper.info.title")}
+						  icon={<UserOutlined />}
+					  />
+					  <Step
+						  disabled={currentStep < 1}
+						  title={t("contractor.home.onboarding.stepper.address")}
+						  icon={<HomeOutlined />}
+					  />
+					  <Step
+						  disabled={currentStep < 2}
+						  title={t("contractor.home.onboarding.stepper.description.title")}
+						  icon={<SolutionOutlined />}
+					  />
+					  <Step
+						  disabled={currentStep < 3}
+						  title={t("contractor.home.onboarding.stepper.verification")}
+						  icon={<SafetyOutlined />}
+					  />
+				  </Steps>
+				  <div className="contractor_onboarding_stepper_box">
+					  {getCurrentComponent()}
+				  </div>
+			  </>
+		  }
         </>
       }
     </div>
